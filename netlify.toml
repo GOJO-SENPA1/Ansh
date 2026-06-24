@@ -1,0 +1,13 @@
+# Netlify build config — auto-detected on git-connected deploys
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Serve real files first; fall back to index.html for any other path.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
