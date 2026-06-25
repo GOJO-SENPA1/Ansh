@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import MatrixRain from './MatrixRain'
 import Scramble from './Scramble'
+import Skull from './Skull'
 
 // status lines that decode in during phase 1 — movie multi-color
 const STATUS = [
@@ -40,7 +41,7 @@ function hexRow() {
 }
 
 export default function Boot({ onDone }) {
-  const [phase, setPhase] = useState(0) // 0 wake · 1 status · 2 breach · 3 granted · 4 exit
+  const [phase, setPhase] = useState(0) // 0 wake · 1 status · 2 breach · 3 granted · 4 skull · exit
   const [lines, setLines] = useState(0)
   const [hex, setHex] = useState([])
   const [pct, setPct] = useState(0)
@@ -63,8 +64,9 @@ export default function Boot({ onDone }) {
   useEffect(() => {
     after(450, () => setPhase(1))
     after(2300, () => setPhase(2))
-    after(4400, () => setPhase(3))
-    after(5600, finish)
+    after(4200, () => setPhase(3))   // ACCESS GRANTED (brief)
+    after(5050, () => setPhase(4))   // 💀 skull takeover
+    after(7450, finish)              // let the skull breathe, then glitch out
     return () => timers.current.forEach(clearTimeout)
   }, [])
 
@@ -152,10 +154,19 @@ export default function Boot({ onDone }) {
         )}
 
         {/* phase 3: access granted stamp */}
-        {phase >= 3 && (
+        {phase === 3 && (
           <div className="cboot-granted">
             <div className="cboot-grantedline glitch" data-text="ACCESS GRANTED">ACCESS GRANTED</div>
             <div className="cboot-grantedsub">welcome back, operator — decrypting session…</div>
+          </div>
+        )}
+
+        {/* phase 4: 💀 DedSec glitch-skull takeover */}
+        {phase >= 4 && (
+          <div className="cboot-skull">
+            <Skull />
+            <div className="cboot-skull-tag glitch" data-text="SYSTEM BREACHED">SYSTEM BREACHED</div>
+            <div className="cboot-skull-sub">// signed, ansh &mdash; you never saw this 💀</div>
           </div>
         )}
       </div>

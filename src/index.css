@@ -1076,3 +1076,97 @@ section { position: relative; padding: clamp(70px, 11vh, 150px) 0; }
 /* belt-and-braces: nothing should ever introduce a sideways scrollbar */
 html, body { max-width: 100%; }
 
+/* ════════════════════════════════════════════════════════════════════════
+   BOOT PHASE 4 — DedSec / Watch-Dogs glitch-skull takeover
+   ════════════════════════════════════════════════════════════════════════ */
+.cboot-skull {
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+  animation: skIn 0.55s cubic-bezier(.2,.8,.2,1) both;
+}
+.skull-rig {
+  position: relative;
+  width: clamp(150px, 36vw, 260px);
+  aspect-ratio: 240 / 300;
+  animation: skShake 0.18s steps(2) infinite;
+}
+.skull-layer { position: absolute; inset: 0; }
+.skull-layer svg, .skull-rig > .skull-layer svg { width: 100%; height: 100%; display: block; }
+.skull-path { fill: #e8fff4; }
+.skull-crack { fill: none; stroke: #061611; stroke-width: 3; }
+
+.s-base { filter: drop-shadow(0 0 8px var(--green)) drop-shadow(0 0 26px rgba(54,249,164,.55)); }
+.s-red  { mix-blend-mode: screen; animation: skSplitA 0.3s steps(2) infinite; }
+.s-red  .skull-path { fill: #ff2d55; }
+.s-cyan { mix-blend-mode: screen; animation: skSplitB 0.26s steps(2) infinite; }
+.s-cyan .skull-path { fill: #27e0ff; }
+
+/* flickering red horror eyes, shining through the sockets */
+.skull-eyes {
+  position: absolute; inset: 0; mix-blend-mode: screen; filter: blur(3px);
+  background:
+    radial-gradient(46px 40px at 30.4% 38.7%, rgba(255,36,64,1), rgba(255,36,64,.35) 55%, transparent 74%),
+    radial-gradient(46px 40px at 69.6% 38.7%, rgba(255,36,64,1), rgba(255,36,64,.35) 55%, transparent 74%),
+    radial-gradient(60% 55% at 50% 40%, rgba(255,30,60,.28), transparent 70%);
+  animation: skEye 1.4s steps(1) infinite;
+}
+.skull-scan {
+  position: absolute; inset: 0; mix-blend-mode: multiply;
+  background: repeating-linear-gradient(to bottom, transparent 0 2px, rgba(0,0,0,.5) 3px 4px);
+  animation: skRoll 5s linear infinite;
+}
+
+.cboot-skull-tag {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 5vw, 42px);
+  letter-spacing: 2px; color: var(--crit);
+  text-shadow: 0 0 18px rgba(255,59,84,.7);
+  position: relative;
+}
+.cboot-skull-tag.glitch::before,
+.cboot-skull-tag.glitch::after {
+  content: attr(data-text);
+  position: absolute; left: 0; top: 0; width: 100%; overflow: hidden;
+}
+.cboot-skull-tag.glitch::before { color: var(--cyan); opacity: .85; animation: skSplitB .4s steps(2) infinite; }
+.cboot-skull-tag.glitch::after  { color: #fff;        opacity: .8;  animation: skSplitA .33s steps(2) infinite; }
+.cboot-skull-sub {
+  font-family: var(--font-mono); font-size: clamp(11px, 1.7vw, 14px);
+  color: var(--text-dim); letter-spacing: 2px;
+}
+
+@keyframes skIn {
+  0%   { opacity: 0; transform: scale(.55); filter: blur(10px); }
+  55%  { opacity: 1; filter: blur(0); }
+  100% { transform: scale(1); }
+}
+@keyframes skShake {
+  0%,100% { transform: translate(0,0); }
+  25% { transform: translate(1px,-1px); }
+  50% { transform: translate(-1px,1px); }
+  75% { transform: translate(1px,1px); }
+}
+@keyframes skSplitA {
+  0%,100% { transform: translate(-2px,1px); }
+  50% { transform: translate(-4px,2px); }
+  82% { transform: translate(-9px,-3px); }
+  84% { transform: translate(5px,2px); }
+}
+@keyframes skSplitB {
+  0%,100% { transform: translate(2px,-1px); }
+  50% { transform: translate(4px,-2px); }
+  76% { transform: translate(9px,3px); }
+  78% { transform: translate(-5px,-2px); }
+}
+@keyframes skEye {
+  0%,100% { opacity: 1; } 8% { opacity: .35; } 10% { opacity: 1; }
+  40% { opacity: .85; } 43% { opacity: .28; } 46% { opacity: 1; } 70% { opacity: .6; }
+}
+@keyframes skRoll { from { background-position: 0 0; } to { background-position: 0 120px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .cboot-skull, .skull-rig, .s-red, .s-cyan, .skull-eyes, .skull-scan,
+  .cboot-skull-tag.glitch::before, .cboot-skull-tag.glitch::after { animation: none; }
+  .s-red  { transform: translate(-3px, 2px); }
+  .s-cyan { transform: translate(3px, -2px); }
+}
+
