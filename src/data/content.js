@@ -211,16 +211,18 @@ export const findings = [
   },
 ]
 
-// Arsenal — skill bars rendered like an nmap scan
+// Arsenal — skill bars rendered like an nmap scan.
+// Ordered + weighted by ACTUAL findings, not vibes. (see the findings[] above)
+//   XSS=4 · RCE/MCP=3 · biz-logic=3 · SSRF=2 · API=2 · auth=1(crit) · secrets=1 · BAC=1
 export const arsenal = [
-  { name: 'Broken Access Control · IDOR / BOLA / BFLA', level: 95 },
-  { name: 'Authentication & JWT attacks', level: 93 },
-  { name: 'SSRF & cloud metadata exploitation', level: 88 },
-  { name: 'XSS — stored / DOM / sanitizer bypass', level: 91 },
-  { name: 'RCE · command injection · MCP/AI tooling', level: 85 },
-  { name: 'API & GraphQL abuse', level: 87 },
-  { name: 'OAuth / OIDC / SAML flows', level: 80 },
-  { name: 'Mobile (APK recon → hidden API)', level: 78 },
+  { name: 'XSS — stored / blind / sanitizer & scheme bypass', level: 90 }, // 4 findings, multiple ATO/phishing chains
+  { name: 'RCE · command injection · MCP / AI tooling', level: 84 },       // 3 (2 clean RCE + sandbox escape)
+  { name: 'Auth & JWT / OIDC signature bypass', level: 81 },              // 1, but it's THE crit — full ATO
+  { name: 'SSRF & cloud-metadata exploitation', level: 71 },              // 2 (one reaches AWS IMDS)
+  { name: 'API & GraphQL abuse · OData / filter injection', level: 67 },  // 2
+  { name: 'Business logic — paywall / redirect / pre-claim', level: 62 }, // 3 lows
+  { name: 'Secrets & info disclosure in JS bundles', level: 57 },         // 1
+  { name: 'Broken Access Control · IDOR / BOLA', level: 52 },             // 1 proper BOLA — honest floor, not 95%
 ]
 
 export const tools = [

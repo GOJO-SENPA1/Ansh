@@ -1016,3 +1016,63 @@ section { position: relative; padding: clamp(70px, 11vh, 150px) 0; }
 .mail-opt-bullet { color: var(--amber); }
 .mail-opt-hint { margin-left: auto; font-size: 11px; color: var(--text-mute); }
 .mail-opt.copy { cursor: pointer; }
+
+/* ════════════════════════════════════════════════════════════════════════
+   MOBILE PERFORMANCE — trim the heavy fullscreen GPU layers on touch devices
+   (backdrop-filter re-blur on scroll, 120px glow blur, animated grain/grid
+   were the lag culprits). Desktop keeps the full CRT treatment.
+   ════════════════════════════════════════════════════════════════════════ */
+@media (hover: none), (pointer: coarse) {
+  /* nav: backdrop-filter forces a re-blur of the page every scroll frame */
+  .nav { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(2,5,6,0.94); }
+
+  /* glow orbs: keep the colored radial wash, drop the ruinous 120px blur */
+  .fx-glow-orb { filter: none; opacity: 0.1; width: 80vw; height: 80vw; }
+
+  /* animated grain is a fullscreen repainting layer — static (or gone) on mobile */
+  .fx-grain { display: none; }
+
+  /* the perspective grid is sized at inset:-50% (4× area) + animates bg-position
+     → fullscreen repaint each frame. Shrink to viewport and hold it still. */
+  .fx-grid { inset: 0; animation: none; }
+
+  /* opacity flicker + scanline blend are cheap individually but stack up */
+  .fx-flicker { animation: none; opacity: 0.4; }
+  .fx-scanlines { mix-blend-mode: normal; opacity: 0.28; }
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   SMALL-SCREEN LAYOUT FIXES — kill horizontal overflow on phones
+   ════════════════════════════════════════════════════════════════════════ */
+@media (max-width: 560px) {
+  .wrap { padding: 0 16px; }
+
+  /* terminal/banner: shrink so the ANSH ASCII + long lines fit a phone width */
+  .console-body { font-size: clamp(10px, 3.1vw, 13px); padding: 14px 12px 12px; }
+
+  /* contact + email rows used 130px 1fr auto → long handles overflowed.
+     stack label over handle, let the value wrap, drop the hover "open" col. */
+  .social-row,
+  .mail-trigger {
+    grid-template-columns: 1fr auto;
+    gap: 2px 10px;
+    padding: 13px 2px;
+  }
+  .social-label { grid-column: 1 / -1; }
+  .social-handle { min-width: 0; overflow-wrap: anywhere; word-break: break-word; font-size: 13px; }
+  .social-go { grid-row: 2; }
+  .mail-trigger .social-go { grid-row: 1; }
+
+  /* findings: slimmer severity rail + tighter body so titles get room */
+  .finding { grid-template-columns: 60px 1fr; }
+  .finding-sev { padding: 14px 6px; }
+  .finding-body { padding: 14px 14px; }
+
+  /* follow bar wraps cleanly instead of pushing width */
+  .follow-bar { gap: 8px; }
+  .follow-label { width: 100%; margin: 0 0 2px; }
+}
+
+/* belt-and-braces: nothing should ever introduce a sideways scrollbar */
+html, body { max-width: 100%; }
+
