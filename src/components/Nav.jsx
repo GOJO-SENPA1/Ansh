@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
-import { identity } from '../data/content'
 
 const LINKS = [
-  { id: 'about', n: '01' },
+  { id: 'approach', n: '01' },
   { id: 'findings', n: '02' },
-  { id: 'arsenal', n: '03' },
-  { id: 'writeups', n: '04' },
+  { id: 'disclosures', n: '03' },
+  { id: 'capabilities', n: '04' },
+  { id: 'writeups', n: '05' },
 ]
 
 export default function Nav() {
@@ -18,16 +18,14 @@ export default function Nav() {
 
   return (
     <nav className={`nav ${scrolled ? 'scrolled' : ''}`}>
-      <a href="#top" className="nav-brand">
-        {identity.handle}<span className="blink">_</span>
-      </a>
+      <a href="#top" className="nav-brand">ansh<b>.</b><span className="cur">_</span></a>
       <div className="nav-links">
         {LINKS.map((l) => (
           <a key={l.id} href={`#${l.id}`} className="nav-link">
-            <span className="b">{l.n}.</span> {l.id}
+            <span className="n">{l.n}</span> {l.id}
           </a>
         ))}
-        <a href="#contact" className="nav-cta">./contact.sh</a>
+        <a href="#contact" className="nav-cta">get in touch</a>
       </div>
     </nav>
   )

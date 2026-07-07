@@ -1,14 +1,13 @@
-// Fixed atmospheric overlays + background. All pointer-events:none.
+// Fixed atmospheric layers — subtle depth, not spectacle. All pointer-events:none.
 export default function Effects() {
   return (
     <>
-      <div className="fx-glow-orb a" />
-      <div className="fx-glow-orb b" />
-      <div className="fx-grid" />
-      <div className="fx-flicker" />
-      <div className="fx-vignette" />
-      <div className="fx-scanlines" />
-      <div className="fx-grain" />
+      <div className="atmos" aria-hidden="true">
+        <div className="atmos-grid" />
+        <div className="atmos-radial" />
+      </div>
+      <div className="atmos-vig" aria-hidden="true" />
+      <div className="atmos-scan" aria-hidden="true" />
     </>
   )
 }

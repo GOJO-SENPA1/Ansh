@@ -1,48 +1,47 @@
-import { arsenal, tools } from '../data/content'
+import { capabilities, tools } from '../data/content'
 import { useReveal } from '../hooks'
+
+// bar width is REAL: proportional to documented finding count, not a vibe.
+const MAX = Math.max(...capabilities.map((c) => c.count))
 
 export default function Arsenal() {
   const [ref, shown] = useReveal()
   return (
-    <section id="arsenal" className="wrap">
+    <section id="capabilities" className="wrap">
       <div ref={ref} className={`reveal ${shown ? 'in' : ''}`}>
-        <div className="eyebrow"><span className="num">03.</span> nmap -sV ./skills</div>
+        <div className="eyebrow"><span className="idx">04</span> <span className="txt">capabilities</span> — weighted by real findings</div>
 
-        <div className="arsenal-grid">
+        <div className="cap-grid">
           <div>
-            {arsenal.map((s, i) => (
-              <div className="scan-row" key={s.name}>
-                <div className="scan-top">
-                  <span className="scan-name">{s.name}</span>
-                  <span className="scan-pct">{s.level}%</span>
+            {capabilities.map((c, i) => (
+              <div className="cap-row" key={c.cls}>
+                <div className="cap-top">
+                  <span className="cap-name">{c.cls}</span>
+                  <span className="cap-count">{c.count}<span className="l"> {c.count === 1 ? 'finding' : 'findings'}</span></span>
                 </div>
-                <div className="scan-track">
+                <div className="cap-track">
                   <div
-                    className="scan-fill"
-                    style={{
-                      width: shown ? `${s.level}%` : '0%',
-                      transition: `width 1s cubic-bezier(.2,.7,.2,1) ${0.1 + i * 0.09}s`,
-                    }}
+                    className="cap-fill"
+                    style={{ width: shown ? `${(c.count / MAX) * 100}%` : '0%', transitionDelay: `${0.1 + i * 0.08}s` }}
                   />
                 </div>
+                <div className="cap-note">{c.note}</div>
               </div>
             ))}
           </div>
 
-          <div className="term">
+          <aside className="term tools-card">
             <div className="term-bar">
               <span className="term-dot r" /><span className="term-dot y" /><span className="term-dot g" />
-              <span className="term-title">~/ <b>which *</b></span>
+              <span className="term-title">~/ <b>which -a</b></span>
             </div>
             <div className="term-body">
-              <div style={{ color: 'var(--text-mute)', fontSize: 12, marginBottom: 14, letterSpacing: 1 }}>
-                {'>'} loaded toolchain:
-              </div>
+              <div className="tools-head">{'>'} <b>daily toolchain</b> — recon → discovery → exploit</div>
               <div className="tools-cloud">
-                {tools.map((t) => <span className="tool-chip" key={t}>{t}</span>)}
+                {tools.map((t) => <span className="tool" key={t}>{t}</span>)}
               </div>
             </div>
-          </div>
+          </aside>
         </div>
       </div>
     </section>
